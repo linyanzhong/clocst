@@ -38,16 +38,23 @@ clocst [PATH] [OPTIONS]
 ```
 $ clocst ~/myproject
 
- 12.4K   myproject            │████████████████████│ 100%
-  8.1K   ├── src              │█████████████░░░░░░░│  65%
-  4.2K   │   ├── main.rs      │████████░░░░░░░░░░░░│  34%
-  3.9K   │   └── lib.rs       │███████░░░░░░░░░░░░░│  31%
-  4.3K   └── tests            │████████░░░░░░░░░░░░│  35%
+  26   ┌── Cargo.toml                                                 │                    │   2%
+  36   ├── AGENTS.md                                                  │█                   │   3%
+  64   ├── README.md                                                  │█                   │   5%
+  68   │ ┌── integration.rs                                           │█                   │   5%
+  68   ├─┴ tests                                                      │█                   │   5%
+  60   │ ┌── languages.rs                                             │█                   │   4%
+  74   │ ├── main.rs                                                  │█                   │   5%
+  90   │ ├── scanner.rs                                               │█                   │   7%
+ 182   │ ├── tree.rs                                                  │███                 │  13%
+ 783   │ ├── renderer.rs                                              │███████████         │  57%
+1.2K   ├─┴ src                                                        │█████████████████   │  86%
+1.4K ┌─┴ clocst                                                       │███████████████████░│ 100%
 
-Rust 12.4K ████████████████████ 100%
+legend: ██ Rust  ██ Markdown  ██ TOML  ██ Others
 ```
 
-The colored `█` segments represent languages within the `--top` range; `░` fills the rest.
+The colored `█` segments represent languages within the `--top` range.
 
 ## How It Works
 
