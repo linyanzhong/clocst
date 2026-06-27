@@ -1,0 +1,19 @@
+[package]
+name = "clocst"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "clocst"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+ignore = "0.4"
+rayon = "1"
+crossterm = "0.28"
+unicode-width = "0.2"
+
+[dev-dependencies]
+tempfile = "3"
+assert_cmd = "2"
