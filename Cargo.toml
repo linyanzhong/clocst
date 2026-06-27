@@ -2,6 +2,13 @@
 name = "clocst"
 version = "0.1.0"
 edition = "2021"
+description = "Code line counter with dust-style directory tree visualization"
+license = "MIT"
+repository = "https://github.com/linyanzhong/clocst"
+readme = "README.md"
+keywords = ["cloc", "lines-of-code", "tree", "cli", "code-stats"]
+categories = ["command-line-utilities", "development-tools"]
+exclude = ["CLAUDE.md", "AGENTS.md", "assets/"]
 
 [[bin]]
 name = "clocst"
