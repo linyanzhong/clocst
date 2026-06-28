@@ -38,18 +38,18 @@ clocst [PATH] [OPTIONS]
 ```
 $ clocst ~/myproject
 
-  26   ┌── Cargo.toml                                                 │                    │   2%
-  36   ├── AGENTS.md                                                  │█                   │   3%
-  64   ├── README.md                                                  │█                   │   5%
-  68   │ ┌── integration.rs                                           │█                   │   5%
-  68   ├─┴ tests                                                      │█                   │   5%
-  60   │ ┌── languages.rs                                             │█                   │   4%
-  74   │ ├── main.rs                                                  │█                   │   5%
-  90   │ ├── scanner.rs                                               │█                   │   7%
- 182   │ ├── tree.rs                                                  │███                 │  13%
- 783   │ ├── renderer.rs                                              │███████████         │  57%
-1.2K   ├─┴ src                                                        │█████████████████   │  86%
-1.4K ┌─┴ clocst                                                       │███████████████████░│ 100%
+  26   ┌── Cargo.toml                         │                    │   2%
+  36   ├── AGENTS.md                          │█                   │   3%
+  64   ├── README.md                          │█                   │   5%
+  68   │ ┌── integration.rs                   │█                   │   5%
+  68   ├─┴ tests                              │█                   │   5%
+  60   │ ┌── languages.rs                     │█                   │   4%
+  74   │ ├── main.rs                          │█                   │   5%
+  90   │ ├── scanner.rs                       │█                   │   7%
+ 182   │ ├── tree.rs                          │███                 │  13%
+ 783   │ ├── renderer.rs                      │███████████         │  57%
+1.2K   ├─┴ src                                │█████████████████   │  86%
+1.4K ┌─┴ clocst                               │███████████████████░│ 100%
 
 legend: ██ Rust  ██ Markdown  ██ TOML  ██ Others
 ```
