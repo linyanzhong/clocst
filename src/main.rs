@@ -22,6 +22,10 @@ struct Cli {
     #[arg(long)]
     depth: Option<usize>,
 
+    /// Limit the number of top directories/files shown
+    #[arg(short = 'n', long = "number-of-lines")]
+    number_of_lines: Option<usize>,
+
     /// Disable .gitignore / .ignore
     #[arg(long)]
     no_ignore: bool,
@@ -70,5 +74,12 @@ fn main() {
         .map(|(w, h)| (w as usize, h as usize))
         .unwrap_or((80, 24));
 
-    renderer::render(&root_node, &scheme, cli.depth, term_height, term_width);
+    renderer::render(
+        &root_node,
+        &scheme,
+        cli.depth,
+        cli.number_of_lines,
+        term_height,
+        term_width,
+    );
 }

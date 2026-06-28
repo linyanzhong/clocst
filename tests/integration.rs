@@ -46,6 +46,15 @@ fn accepts_depth_flag() {
 }
 
 #[test]
+fn accepts_number_flag() {
+    let dir = make_fixture();
+    Command::cargo_bin("clocst").unwrap()
+        .args([dir.path().to_str().unwrap(), "-n", "1"])
+        .assert()
+        .success();
+}
+
+#[test]
 fn exits_cleanly_on_empty_dir() {
     let dir = TempDir::new().unwrap();
     Command::cargo_bin("clocst").unwrap()

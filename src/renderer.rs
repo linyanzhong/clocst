@@ -144,9 +144,18 @@ fn label_for(path: &std::path::Path) -> String {
 /// synthetic "N others" rows it produces during `rebuild_visible_children` can
 /// push the actual row count above the budget.  The loop tightens `node_budget`
 /// by one row at a time until the final row count fits, then returns that tree.
-fn build_visible_tree(root: &TreeNode, max_depth: Option<usize>, term_height: usize) -> VisibleNode {
-    let budget = visible_row_budget(term_height);
-    let child_budget = budget.saturating_sub(1); // root row is not counted here
+fn build_visible_tree(
+    root: &TreeNode,
+    max_depth: Option<usize>,
+    term_height: usize,
+    max_entries: Option<usize>,
+) -> VisibleNode {
+    let budget = max_entries.unwrap_or_else(|| visible_row_budget(term_height));
+    let child_budget = if max_entries.is_some() {
+        budget
+    } else {
+        budget.saturating_sub(1) // root row is not counted here
+    };
     let mut node_budget = budget;
 
     loop {
@@ -418,10 +427,11 @@ pub fn render(
     root: &TreeNode,
     scheme: &ColorScheme,
     max_depth: Option<usize>,
+    max_entries: Option<usize>,
     term_height: usize,
     term_width: usize,
 ) {
-    let visible_root = build_visible_tree(root, max_depth, term_height);
+    let visible_root = build_visible_tree(root, max_depth, term_height, max_entries);
     let mut rows: Vec<Row> = Vec::new();
     collect_rows(&visible_root, 0, max_depth, "", &mut rows);
     rows.push(Row {
@@ -593,7 +603,7 @@ mod tests {
             ],
         );
 
-        let visible = build_visible_tree(&root, None, 8);
+        let visible = build_visible_tree(&root, None, 8, None);
 
         assert_eq!(count_rows(&visible.children), 1);
         assert_eq!(visible.children[0].label, "4 others");
@@ -611,7 +621,7 @@ mod tests {
             ],
         );
 
-        let visible = build_visible_tree(&root, None, 11);
+        let visible = build_visible_tree(&root, None, 11, None);
 
         assert_eq!(1 + count_rows(&visible.children), 2);
         assert_eq!(visible.children[0].label, "4 others");
@@ -629,7 +639,7 @@ mod tests {
             ],
         );
 
-        let visible = build_visible_tree(&root, Some(1), 11);
+        let visible = build_visible_tree(&root, Some(1), 11, None);
 
         assert_eq!(visible.children.len(), 2);
         let aggregated = visible.children.last().unwrap();
@@ -670,7 +680,7 @@ mod tests {
             ],
         );
 
-        let visible = build_visible_tree(&root, None, 18);
+        let visible = build_visible_tree(&root, None, 18, None);
 
         assert_eq!(visible.children[0].label, "webapp");
         assert_eq!(visible.children[1].label, "internal");
@@ -702,7 +712,7 @@ mod tests {
             vec![dir("src", vec![dir("nested", vec![file("main.rs", 10, "Rust")])])],
         );
 
-        let visible = build_visible_tree(&root, None, 20);
+        let visible = build_visible_tree(&root, None, 20, None);
 
         assert_eq!(
             row_labels(&visible, None),
@@ -725,7 +735,7 @@ mod tests {
             ],
         );
 
-        let visible = build_visible_tree(&root, None, 20);
+        let visible = build_visible_tree(&root, None, 20, None);
 
         assert_eq!(
             row_labels(&visible, None),
@@ -761,7 +771,7 @@ mod tests {
             ],
         );
 
-        let visible = build_visible_tree(&root, None, 30);
+        let visible = build_visible_tree(&root, None, 30, None);
 
         assert_eq!(
             row_labels(&visible, None),
@@ -779,5 +789,26 @@ mod tests {
                 "┌─┴ repo".to_string(),
             ]
         );
+    }
+
+    #[test]
+    fn explicit_entry_limit_ignores_terminal_height() {
+        let root = dir(
+            "repo",
+            vec![
+                dir("a", vec![file("a1.go", 100, "Go")]),
+                dir("b", vec![file("b1.rs", 80, "Rust")]),
+                dir("c", vec![file("c1.md", 60, "Markdown")]),
+                dir("d", vec![file("d1.py", 40, "Python")]),
+            ],
+        );
+
+        let visible = build_visible_tree(&root, None, 8, Some(3));
+
+        assert_eq!(count_rows(&visible.children), 3);
+        assert_eq!(visible.children.len(), 2);
+        assert_eq!(visible.children[0].label, "a");
+        assert_eq!(visible.children[0].children[0].label, "a1.go");
+        assert_eq!(visible.children[1].label, "3 others");
     }
 }
