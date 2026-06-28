@@ -28,8 +28,9 @@ clocst [PATH] [OPTIONS]
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| `--top N` | Number of languages to highlight with color | `4` |
+| `--highlight-languages N` | Number of languages to highlight with color | `4` |
 | `--depth D` | Maximum directory depth to expand | unlimited (auto-pruned by terminal height) |
+| `-n, --number-of-lines N` | Limit the number of top directories/files shown | unlimited |
 | `--no-ignore` | Disable `.gitignore` / `.ignore` filtering | — |
 | `--colors c1,c2,...` | Custom color list | `blue,green,yellow,magenta` |
 
@@ -54,7 +55,7 @@ $ clocst ~/myproject
 legend: ██ Rust  ██ Markdown  ██ TOML  ██ Others
 ```
 
-The colored `█` segments represent languages within the `--top` range.
+The colored `█` segments represent languages within the `--highlight-languages` range.
 
 ## How It Works
 

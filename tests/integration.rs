@@ -19,10 +19,10 @@ fn runs_on_directory() {
 }
 
 #[test]
-fn accepts_top_flag() {
+fn accepts_highlight_languages_flag() {
     let dir = make_fixture();
     Command::cargo_bin("clocst").unwrap()
-        .args([dir.path().to_str().unwrap(), "--top", "2"])
+        .args([dir.path().to_str().unwrap(), "--highlight-languages", "2"])
         .assert()
         .success();
 }

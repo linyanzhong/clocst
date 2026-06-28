@@ -14,9 +14,9 @@ struct Cli {
     /// Directory to scan (default: current directory)
     path: Option<PathBuf>,
 
-    /// Number of top languages to colorize
+    /// Number of languages to highlight with color
     #[arg(long, default_value = "4")]
-    top: usize,
+    highlight_languages: usize,
 
     /// Maximum directory depth to expand
     #[arg(long)]
@@ -68,7 +68,7 @@ fn main() {
     }
 
     let root_node = tree::build_tree(&root, &entries);
-    let scheme = tree::compute_color_scheme(&root_node, cli.top, &colors);
+    let scheme = tree::compute_color_scheme(&root_node, cli.highlight_languages, &colors);
 
     let (term_width, term_height) = terminal::size()
         .map(|(w, h)| (w as usize, h as usize))
